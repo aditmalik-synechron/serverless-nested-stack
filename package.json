@@ -1,0 +1,23 @@
+{
+  "name": "serverless-nested-stack",
+  "version": "0.0.1",
+  "description": "Serverless nested stack workaround for cloudformation 200 resource limit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jagdish-176/serverless-nested-stack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jagdish-176/serverless-nested-stack/issues"
+  },
+  "homepage": "https://github.com/jagdish-176/serverless-nested-stack#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "filesize": "^3.5.10"
+  }
+}

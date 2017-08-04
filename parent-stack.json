@@ -1,0 +1,34 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket"
+    },
+    "LogStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "{LogStackS3}",
+        "TimeoutInMinutes": "60"
+      }
+    },
+    "ApiStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "{ApiStackS3}",
+        "TimeoutInMinutes": "60"
+      },
+      "DependsOn": [
+        "LogStack",
+        "ServerlessDeploymentBucket"
+      ]
+    }
+  },
+  "Outputs": {
+    "LogStack": {
+      "Value": { "Ref": "LogStack" }
+    },
+    "ApiStack": {
+      "Value": { "Ref": "ApiStack" }
+    }
+  }
+}
