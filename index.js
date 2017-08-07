@@ -88,6 +88,7 @@ class ServerlessNestedPlugin {
             console.log(parentTemplate.Resources.ApiStack.Properties.TemplateURL);
             console.log(parentTemplate.Resources.LogStack.Properties.TemplateURL);
             this.addParametersParentStack(parentTemplate.Resources.ApiStack.Properties, roles);
+            this.addOutputsParentStack(parentTemplate, cfApiStack);
             this.serverless.service.provider.compiledCloudFormationTemplate = parentTemplate;
             fs.writeFile(this.packagePath + '/compiled-cloudformation-template.json',
               JSON.stringify(parentTemplate, null, ' '));
@@ -166,7 +167,19 @@ class ServerlessNestedPlugin {
     }
     //cf.Parameters.ServerlessDeploymentBucket = bucketName;
   }
-
+  addOutputsParentStack(cf, apiStack) {
+        cf.Outputs = cf.Outputs || {};
+        for (let key in apiStack.Outputs) {
+            if (apiStack.Outputs.hasOwnProperty(key)) {
+                cf.Outputs[key] = {
+                    Value:{
+                        'Fn::GetAtt': ['ApiStack', `Outputs.${key}`]
+                    }
+                }
+            }
+        }
+        //cf.Parameters.ServerlessDeploymentBucket = bucketName;
+    }
   setRefForPolicy(cf) {
     Object.keys(cf.Resources).forEach(key => {
       const Func = cf.Resources[key];
