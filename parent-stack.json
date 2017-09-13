@@ -11,6 +11,16 @@
         "TimeoutInMinutes": "60"
       }
     },
+    "PermissionStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "{PermissionStackS3}",
+        "TimeoutInMinutes": "60"
+      },
+      "DependsOn": [
+        "ApiStack"
+      ]
+    },
     "ApiStack": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
