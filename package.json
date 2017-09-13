@@ -1,6 +1,6 @@
 {
   "name": "serverless-nested-stack",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Serverless nested stack workaround for cloudformation 200 resource limit",
   "main": "index.js",
   "scripts": {

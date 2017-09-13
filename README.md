@@ -5,7 +5,7 @@ Serverless plugin to Workaround for Cloudformation 200 resource limit
 
 Run `npm install` in your Serverless project.
 
-    $ npm install --save-dev https://github.com/jagdish-176/serverless-nested-stack#0.0.0
+    $ npm install --save-dev https://github.com/jagdish-176/serverless-nested-stack#0.0.4
 
 Add the plugin to your serverless.yml file
 
