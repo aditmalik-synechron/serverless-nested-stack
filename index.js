@@ -42,7 +42,7 @@ class ServerlessNestedPlugin {
             require('./cloudformation-template.json'));
         cfLogStack.Resources = Object.assign({}, logGroups, roles);
         cfLogStack.Outputs = {};
-
+        this.reduceIamRoleLambdaExecutionSize(cfLogStack);
         for (let key in roles) {
             if (!roles.hasOwnProperty(key)) {
                 continue;
@@ -181,6 +181,27 @@ class ServerlessNestedPlugin {
                 }
             }
         }
+    }
+
+    reduceIamRoleLambdaExecutionSize(cf) {
+        for (const key in cf.Resources) {
+            if (key === 'IamRoleLambdaExecution') {
+                cf.Resources[key].Properties.Policies.forEach(policy=>{
+                  policy.PolicyDocument.Statement.forEach(x => {
+                      x.Resource = [
+                          {"Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*:*"}
+                      ]
+                  });
+                })
+            }
+        }
+        Object.keys(cf.Resources).forEach(key => {
+            if (cf.Resources[key].Type === 'AWS::Lambda::Permission' ||
+                cf.Resources[key].Type === 'AWS::Events::Rule') {
+                permissions[key] = cf.Resources[key];
+                delete cf.Resources[key];
+            }
+        });
     }
 
     addPermissionParameters(cf, apiStack, parentStack) {
