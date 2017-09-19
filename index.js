@@ -186,12 +186,15 @@ class ServerlessNestedPlugin {
     reduceIamRoleLambdaExecutionSize(cf) {
         for (const key in cf.Resources) {
             if (key === 'IamRoleLambdaExecution') {
-                cf.Resources[key].Properties.Policies.forEach(policy=>{
-                  policy.PolicyDocument.Statement.forEach(x => {
-                      x.Resource = [
-                          {"Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*:*"}
-                      ]
-                  });
+                cf.Resources[key].Properties.Policies.forEach(policy => {
+
+                    policy.PolicyDocument.Statement.forEach(x => {
+                        if (x.Action.includes('logs:CreateLogStream') || x.Action.includes('logs:PutLogEvents')) {
+                            x.Resource = [
+                                {"Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*:*"}
+                            ]
+                        }
+                    });
                 })
             }
         }
