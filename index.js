@@ -107,8 +107,7 @@ class ServerlessNestedPlugin {
 
                         this.serverless.service.provider.compiledCloudFormationTemplate = parentStack;
                         fs.writeFile(this.packagePath + '/compiled-cloudformation-template.json',
-                            JSON.stringify(parentStack, null, ' '));
-                        resolve();
+                            JSON.stringify(parentStack, null, ' '), () => { resolve(); });
                     }).catch(reject);
                 });
 
